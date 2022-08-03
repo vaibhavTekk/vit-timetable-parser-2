@@ -1,0 +1,22 @@
+{
+  "name": "vit-timetable-parser",
+  "version": "1.0.0",
+  "description": "A Timetable Parser for VIT Timetables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vit",
+    "timetable",
+    "calendar"
+  ],
+  "author": "Vaibhav Tekk",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "cheerio-tableparser": "^1.0.1",
+    "htmlparser2": "^8.0.1",
+    "ics": "^2.37.0"
+  }
+}
