@@ -26,31 +26,52 @@ const sampleData = [
   },
 ];
 
-const eventList = [];
-const openingDate = moment("20220810");
-const lastInstructionalDay = moment("20221123").format("YYYYMMDD[T]HHmm[00Z]");
-const repeatRule = `FREQ=WEEKLY;INTERVAL=1;UNTIL=${lastInstructionalDay}`;
-sampleData.map((course) => {
-  course.slots.map((slot) => {
-    slotData[slot].map((timedata) => {
-      const firstEventDate = findNextDay(timedata[2], openingDate).format("YYYY-MM-DD").split("-").map(Number);
-      const event = {
-        start: [...firstEventDate, timedata[0], timedata[1]],
-        duration: { minutes: 50 },
-        title: course.title,
-        recurrenceRule: repeatRule,
-        description: course.code,
-        location: course.venue,
-        organizer: { name: course.faculty },
-      };
-      eventList.push(event);
+function createEventList(parsedData) {
+  const eventList = [];
+  const openingDate = moment("20220810");
+  const lastInstructionalDay = moment("20221123").format("YYYYMMDD[T]HHmm[00Z]");
+  const repeatRule = `FREQ=WEEKLY;INTERVAL=1;UNTIL=${lastInstructionalDay}`;
+  parsedData.map((course) => {
+    let slotlist = [];
+    let duration = {};
+
+    if (course.type === "P" || course.type === "E") {
+      if (course.slots.length == 2) {
+        slotlist = [course.slots[0]];
+        duration = { hours: 1, minutes: 40 };
+      } else if (course.slots.length == 4) {
+        slotlist = [course.slots[0], course.slots[2]];
+        duration = { hours: 1, minutes: 40 };
+      } else {
+        slotlist = course.slots;
+        duration = { minutes: 50 };
+      }
+    } else {
+      slotlist = course.slots;
+      duration = { minutes: 50 };
+    }
+
+    slotlist.map((slot) => {
+      if (slot !== "NIL" && slotData[slot]) {
+        slotData[slot].map((timedata) => {
+          const firstEventDate = findNextDay(timedata[2], openingDate).format("YYYY-MM-DD").split("-").map(Number);
+          const event = {
+            start: [...firstEventDate, timedata[0], timedata[1]],
+            duration,
+            title: `${course.title} - ${course.code}`,
+            recurrenceRule: repeatRule,
+            description: course.code,
+            location: course.venue,
+            organizer: { name: course.faculty },
+          };
+          eventList.push(event);
+        });
+      }
     });
   });
-});
 
-console.log(eventList);
-//console.log(moment().day());
-//console.log(findNextDay(2, moment()).format("LL"));
+  return eventList;
+}
 
 /*const ics = require("ics");
 
@@ -63,11 +84,12 @@ const event = {
   organizer: { name: "Admin", email: "Race@BolderBOULDER.com" },
 };*/
 
-const { error, value } = ics.createEvents(eventList);
-
-if (error) {
-  console.log(error);
-  return;
+function createICS(list) {
+  const { error, value } = ics.createEvents(list);
+  if (error) {
+    return error;
+  }
+  return value;
 }
 
-console.log(value);
+module.exports = { createICS, createEventList };

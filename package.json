@@ -17,6 +17,7 @@
     "cheerio": "^1.0.0-rc.12",
     "cheerio-tableparser": "^1.0.1",
     "htmlparser2": "^8.0.1",
-    "ics": "^2.37.0"
+    "ics": "^2.37.0",
+    "moment": "^2.29.4"
   }
 }

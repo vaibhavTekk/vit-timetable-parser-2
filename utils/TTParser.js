@@ -36,6 +36,7 @@ function getCourseList(table) {
     const venue = `${building}${room ? `- ${room}` : ""}`;
     const courseObject = {
       code: coursearray[i].split("-")[0].trim(),
+      type: coursearray[i].split("-")[0].trim().slice(-1),
       title: coursearray[i].split("-")[1].split("(")[0].trim(),
       slots: slotarray[i].split("-")[0].trim().split("+"),
       venue,
