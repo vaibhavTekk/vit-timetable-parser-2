@@ -18,7 +18,10 @@ app.post("/upload", upload.single("timetable"), (req, res) => {
       const filename = req.file.filename;
       const filepath = `${req.file.destination}/${req.file.filename}`;
       generateICSFile(filepath, startDate, endDate);
-      res.send("upload complete");
+      res.send({
+        filename,
+        isUploaded: true,
+      });
     } else {
       throw new Error("Fill all Form Data");
     }
@@ -27,8 +30,8 @@ app.post("/upload", upload.single("timetable"), (req, res) => {
   }
 });
 
-app.get("/download", (req, res) => {
-  res.download(__dirname + "/output/calendar.ics");
+app.get("/download/:id", (req, res) => {
+  res.download(__dirname + `/output/${req.params.id}.ics`);
 });
 
 app.use((req, res) => {
