@@ -26,10 +26,10 @@ const sampleData = [
   },
 ];
 
-function createEventList(parsedData) {
+function createEventList(parsedData, startDate, endDate) {
   const eventList = [];
-  const openingDate = moment("20220810");
-  const lastInstructionalDay = moment("20221123").format("YYYYMMDD[T]HHmm[00Z]");
+  const openingDate = moment(startDate);
+  const lastInstructionalDay = moment(endDate).format("YYYYMMDD[T]HHmm[00Z]");
   const repeatRule = `FREQ=WEEKLY;INTERVAL=1;UNTIL=${lastInstructionalDay}`;
   parsedData.map((course) => {
     let slotlist = [];
