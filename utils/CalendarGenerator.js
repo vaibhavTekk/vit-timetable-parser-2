@@ -29,7 +29,7 @@ const sampleData = [
 function createEventList(parsedData, startDate, endDate) {
   const eventList = [];
   const openingDate = moment(startDate);
-  const lastInstructionalDay = moment(endDate).format("YYYYMMDD[T]HHmm[00Z]");
+  const lastInstructionalDay = moment(endDate).add(1, "days").format("YYYYMMDD[T]HHmm[00Z]");
   const repeatRule = `FREQ=WEEKLY;INTERVAL=1;UNTIL=${lastInstructionalDay}`;
   parsedData.map((course) => {
     let slotlist = [];
@@ -61,8 +61,7 @@ function createEventList(parsedData, startDate, endDate) {
             title: `${course.title} - ${course.code}`,
             recurrenceRule: repeatRule,
             description: course.code,
-            location: course.venue,
-            organizer: { name: course.faculty },
+            location: `${course.venue} - ${course.faculty}`,
           };
           eventList.push(event);
         });
