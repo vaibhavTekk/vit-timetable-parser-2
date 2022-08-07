@@ -10,7 +10,7 @@ Requirements : NodeJS
 $ git clone https://github.com/vaibhavTekk/vit-timetable-parser.git
 $ cd vit-timetable-parser
 $ npm install
-$ node index.js
+$ npm run dev //to run the development server
 ```
 
 now navigate to [http://localhost:3000/](http://localhost:3000/)
