@@ -2,6 +2,8 @@ const form = document.querySelector("form");
 console.log("script loaded");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  hideError();
+  hideButton();
   const formData = new FormData(form);
   axios
     .post("/api/upload", formData)
@@ -27,6 +29,12 @@ function showButton(filename) {
   downloadButton.href = `/download/${filename}`;
 }
 
+function hideButton() {
+  const buttondiv = document.querySelector("#buttondiv");
+  buttondiv.classList.remove("flex");
+  buttondiv.classList.add("hidden");
+}
+
 const uploadbox = document.querySelector("#file-upload");
 uploadbox.onchange = () => {
   if (uploadbox.files.length > 0) {
@@ -34,6 +42,12 @@ uploadbox.onchange = () => {
     fileName.textContent = "Uploaded file: " + uploadbox.files[0].name;
   }
 };
+
+function hideError() {
+  const errordiv = document.querySelector("#error");
+  errordiv.classList.remove("flex");
+  errordiv.classList.add("hidden");
+}
 
 function showError(error) {
   const errordiv = document.querySelector("#error");
