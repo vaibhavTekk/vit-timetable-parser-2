@@ -23,3 +23,11 @@ function showButton(filename) {
   downloadButton.classList.remove("hidden");
   downloadButton.href = `/download/${filename}`;
 }
+
+const uploadbox = document.querySelector("#file-upload");
+uploadbox.onchange = () => {
+  if (uploadbox.files.length > 0) {
+    const fileName = document.querySelector("#filename");
+    fileName.textContent = "Uploaded File : " + uploadbox.files[0].name;
+  }
+};
