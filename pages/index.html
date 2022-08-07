@@ -8,10 +8,10 @@
     <script src="https://kit.fontawesome.com/75f23e2b1a.js" crossorigin="anonymous"></script>
     <title>Document</title>
   </head>
-  <body>
+  <body class="font-['Poppins']">
     <div class="flex flex-col justify-center items-center w-full">
       <form
-        class="flex flex-col items-center justify-center gap-4 w-2/5 drop-shadow-md bg-white p-6 rounded-md"
+        class="flex flex-col items-center justify-center gap-4 w-4/5 md:w-3/5 drop-shadow-md bg-white p-6 rounded-md mx-auto"
         action="/upload"
         method="post"
         enctype="multipart/form-data"
@@ -20,9 +20,9 @@
         <div class="flex justify-center items-center text-cyan-800 w-full">
           <label
             for="file-upload"
-            class="flex flex-col justify-center items-center w-full h-64 gap-1 bg-cyan-100 hover:bg-cyan-50 rounded-lg border-2 border-dashed border-cyan-400"
+            class="flex flex-col justify-center items-center p-4 w-full h-64 gap-1 bg-cyan-100 hover:bg-cyan-50 rounded-lg border-2 border-dashed border-cyan-400"
           >
-            <i class="fa-solid fa-file-arrow-up fa-2xl m-3"></i>
+            <i class="fa-solid fa-file-arrow-up fa-2xl m-6"></i>
             <p class="text-lg"><span class="font-semibold">Click to Upload</span> or Drag and Drop</p>
             <p id="filename">Timetable Page from VTOP (HTML)</p>
             <input type="file" name="timetable" id="file-upload" class="hidden" />
@@ -37,12 +37,31 @@
           <input class="form-input rounded-md" type="date" name="endDate" />
         </div>
         <button type="submit" class="flex flex-row gap-3 px-4 py-2 bg-cyan-500 items-center rounded-md hover:scale-105">
-          <i class="fa-solid fa-upload text-white"></i>
+          <i class="fa-solid fa-calendar-plus text-white"></i>
           <span class="text-white">Generate Calendar File</span>
         </button>
+        <div
+          id="buttondiv"
+          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-emerals-200 p-6 rounded-md mx-auto"
+        >
+          <p class="font-semibold text-emerald-800">Here's Your Calendar File</p>
+          <a
+            href="/download"
+            class="button w-auto flex flex-row gap-3 px-4 py-2 bg-emerald-500 items-center rounded-md hover:scale-105"
+          >
+            <i class="fa-solid fa-download text-white"></i>
+            <span class="text-white">Download Calendar File</span>
+          </a>
+        </div>
+        <div
+          id="error"
+          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-rose-300 p-6 rounded-md mx-auto"
+        >
+          <p class="font-semibold text-black">An Error Occured</p>
+          <p id="errortext" class="text-black">Error</p>
+        </div>
       </form>
     </div>
-    <a href="/download" class="download button hidden">Download ICS File</a>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
