@@ -13,4 +13,4 @@ $ npm install
 $ node index.js
 ```
 
-now navigate to [http://localhost:3000/](http://localhost:3000/)
+navigate to [http://localhost:3000/](http://localhost:3000/) to use the app
