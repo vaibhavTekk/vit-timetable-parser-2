@@ -4,6 +4,7 @@ const port = 3000;
 const multer = require("multer");
 const upload = multer({ dest: "./uploads" });
 const path = require("path");
+const findRemoveSync = require("find-remove");
 
 var parser = require("./utils/TTParser");
 const calendarGenerator = require("./utils/CalendarGenerator");
@@ -21,6 +22,26 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
       const filename = req.file.filename;
       const filepath = `${req.file.destination}/${req.file.filename}`;
       generateICSFile(filepath, startDate, endDate, filename);
+      setTimeout(() => {
+        fs.unlink(__dirname + "/uploads/" + filename, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log("fileremoved");
+          //file removed
+        });
+      }, 900000);
+      setTimeout(() => {
+        fs.unlink(__dirname + `/output/${filename}.ics`, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log("fileremoved");
+          //file removed
+        });
+      }, 900000);
       res.send({
         filename,
       });
@@ -37,7 +58,7 @@ app.get("/download/:id", (req, res) => {
   try {
     res.download(__dirname + `/output/${req.params.id}.ics`, "calendar.ics");
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send("Can't find File");
   }
 });
 
