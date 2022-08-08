@@ -54,7 +54,7 @@ function ParseHTMLData(data) {
     let table = $("table").first().parsetable();
     return getCourseList(table);
   } catch (error) {
-    throw new Error("Error Parsing HTML Data");
+    throw new Error(error);
   }
 }
 

@@ -3,6 +3,8 @@ const app = express();
 const port = 3000;
 const multer = require("multer");
 const upload = multer({ dest: "./uploads" });
+const path = require("path");
+const findRemoveSync = require("find-remove");
 
 var parser = require("./utils/TTParser");
 const calendarGenerator = require("./utils/CalendarGenerator");
@@ -29,6 +31,8 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
           console.log("fileremoved");
           //file removed
         });
+      }, 900000);
+      setTimeout(() => {
         fs.unlink(__dirname + `/output/${filename}.ics`, (err) => {
           if (err) {
             console.error(err);
@@ -46,9 +50,7 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
       throw new Error("Fill all Form Data");
     }
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message, stack: error.stack });
-    //throw new Error(error.message);
+    res.status(400).send(error);
   }
 });
 
@@ -56,8 +58,7 @@ app.get("/download/:id", (req, res) => {
   try {
     res.download(__dirname + `/output/${req.params.id}.ics`, "calendar.ics");
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message, stack: error.stack });
+    res.status(400).send("Can't find File");
   }
 });
 
@@ -75,7 +76,7 @@ function generateICSFile(filepath, startDate, endDate, filename) {
   const icsOutput = calendarGenerator.createICS(eventList);
   fs.writeFile(`./output/${filename}.ics`, icsOutput, (err) => {
     if (err) {
-      throw new Error("Error creating ICS File");
+      throw new Error(err);
     }
   });
 }

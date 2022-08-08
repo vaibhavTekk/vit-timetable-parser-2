@@ -6,11 +6,13 @@ form.addEventListener("submit", (e) => {
   hideButton();
   const formData = new FormData(form);
   axios
-    .post("/api/upload", formData, { headers: { Accept: "application/json" } })
+    .post("/api/upload", formData)
     .then((res) => {
       if (res.data.filename) {
         //console.log(res.data.filename);
         showButton(res.data.filename);
+      } else {
+        throw new Error("Error Generating Calendar file");
       }
     })
     .catch((err) => {
@@ -48,10 +50,9 @@ function hideError() {
 }
 
 function showError(error) {
-  console.log(error);
   const errordiv = document.querySelector("#error");
   const errortext = document.querySelector("#errortext");
-  errortext.innerHTML = error.response.data.error;
+  errortext.innerHTML = error.response.data.message || error.message;
   errordiv.classList.remove("hidden");
   errordiv.classList.add("flex");
 }
