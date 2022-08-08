@@ -86,7 +86,7 @@ const event = {
 function createICS(list) {
   const { error, value } = ics.createEvents(list);
   if (error) {
-    return error;
+    throw new Error("Error creating ICS data");
   }
   return value;
 }
