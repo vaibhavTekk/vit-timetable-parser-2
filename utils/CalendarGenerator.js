@@ -27,6 +27,7 @@ const sampleData = [
 ];
 
 function createEventList(parsedData, startDate, endDate) {
+  console.log(parsedData);
   const eventList = [];
   const openingDate = moment(startDate);
   const lastInstructionalDay = moment(endDate).add(1, "days").format("YYYYMMDD[T]HHmm[00Z]");
@@ -86,7 +87,8 @@ const event = {
 function createICS(list) {
   const { error, value } = ics.createEvents(list);
   if (error) {
-    throw new Error("Error creating ICS data");
+    console.log(error);
+    throw new Error("Error creating ICS data" + error.name + "-" + error.message);
   }
   return value;
 }
