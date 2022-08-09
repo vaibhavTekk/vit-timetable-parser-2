@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const port = process.env.PORT || 3000;
 const multer = require("multer");
-const upload = multer({ dest: "/uploads" });
+const upload = multer({ dest: "./uploads" });
 
 const parser = require("./utils/TTParser");
 const calendarGenerator = require("./utils/CalendarGenerator");
