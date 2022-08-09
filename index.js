@@ -91,7 +91,7 @@ function generateICSFile(filepath, startDate, endDate, filename) {
   const icsOutput = calendarGenerator.createICS(eventList);
   fs.writeFile(`./output/${filename}.ics`, icsOutput, (err) => {
     if (err) {
-      throw new Error("Error creating ICS File");
+      throw new Error("Error creating ICS File" + err.error + "-" + err.message);
     }
   });
 }
