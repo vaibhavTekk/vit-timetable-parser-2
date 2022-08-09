@@ -4,20 +4,66 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <script src="https://kit.fontawesome.com/75f23e2b1a.js" crossorigin="anonymous"></script>
     <title>Document</title>
   </head>
-  <body>
-    <h1>FileUpload</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-      <input type="file" name="timetable" />
-      <label for="startDate">Semester commencement date</label>
-      <input type="date" name="startDate" />
-      <label for="endDate">Final Instructional date</label>
-      <input type="date" name="endDate" />
-      <input type="submit" value="submit" />
-    </form>
-    <a href="/download" class="download button hidden">Download ICS File</a>
+  <body class="font-['Poppins']">
+    <div class="flex flex-col justify-center items-center w-full">
+      <form
+        class="flex flex-col items-center justify-center gap-4 w-4/5 md:w-3/5 drop-shadow-md bg-white p-6 rounded-md mx-auto"
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <p class="text-3xl font-bold">VIT Timetable Generator</p>
+        <div class="flex justify-center items-center text-cyan-800 w-full">
+          <label
+            for="file-upload"
+            class="flex flex-col justify-center items-center p-4 w-full h-64 gap-1 bg-cyan-100 hover:bg-cyan-50 rounded-lg border-2 border-dashed border-cyan-400"
+          >
+            <i class="fa-solid fa-file-arrow-up fa-2xl m-6"></i>
+            <p class="text-lg"><span class="font-semibold">Click to Upload</span> or Drag and Drop</p>
+            <p id="filename">Timetable Page from VTOP (HTML)</p>
+            <input type="file" name="timetable" id="file-upload" class="hidden" />
+          </label>
+        </div>
+        <div class="flex flex-col w-full gap-1">
+          <label class="font-semibold text-lg" for="startDate">Semester Commencement Date</label>
+          <input class="form-input rounded-md" type="date" name="startDate" />
+        </div>
+        <div class="flex flex-col w-full gap-1">
+          <label class="font-semibold text-lg" for="endDate">Last Instructional Day</label>
+          <input class="form-input rounded-md" type="date" name="endDate" />
+        </div>
+        <button type="submit" class="flex flex-row gap-3 px-4 py-2 bg-cyan-500 items-center rounded-md hover:scale-105">
+          <i class="fa-solid fa-calendar-plus text-white"></i>
+          <span class="text-white">Generate Calendar File</span>
+        </button>
+        <span class="text-gray-600 text-sm">All Files are stored for 15 minutes</span>
+        <div
+          id="buttondiv"
+          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-emerals-200 p-6 rounded-md mx-auto"
+        >
+          <p class="font-semibold text-emerald-800">Here's Your Calendar File</p>
+          <a
+            href="/download"
+            class="button w-auto flex flex-row gap-3 px-4 py-2 bg-emerald-500 items-center rounded-md hover:scale-105"
+          >
+            <i class="fa-solid fa-download text-white"></i>
+            <span class="text-white">Download</span>
+          </a>
+        </div>
+        <div
+          id="error"
+          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-rose-300 p-6 rounded-md mx-auto"
+        >
+          <p class="font-semibold text-black">An Error Occured</p>
+          <p id="errortext" class="text-black">Error</p>
+          <p class="text-black">Check Form Inputs</p>
+        </div>
+      </form>
+    </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>

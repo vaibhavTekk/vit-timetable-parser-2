@@ -48,10 +48,14 @@ function getCourseList(table) {
 }
 
 function ParseHTMLData(data) {
-  const $ = cheerio.load(data);
-  cheerioTableParser($);
-  let table = $("table").first().parsetable();
-  return getCourseList(table);
+  try {
+    const $ = cheerio.load(data);
+    cheerioTableParser($);
+    let table = $("table").first().parsetable();
+    return getCourseList(table);
+  } catch (error) {
+    throw new Error("Error Parsing HTML Data");
+  }
 }
 
 module.exports = { ParseHTMLData };
