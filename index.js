@@ -92,7 +92,7 @@ app.use((req, res) => {
   res.status(400).sendFile("./pages/404.html", { root: __dirname });
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`App listening on port ${port}!`));
 
 function generateICSFile(filepath, startDate, endDate, filename) {
   let data = fs.readFileSync(filepath).toString();
@@ -115,10 +115,3 @@ function generateICSFile(filepath, startDate, endDate, filename) {
     });
   }, 900000);
 }
-
-/*
-
-
-
-
-*/

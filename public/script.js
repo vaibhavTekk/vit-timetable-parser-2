@@ -48,7 +48,7 @@ function hideError() {
 }
 
 function showError(error) {
-  console.log(error);
+  //console.log(error);
   const errordiv = document.querySelector("#error");
   const errortext = document.querySelector("#errortext");
   errortext.innerHTML = error.response.data.error;
