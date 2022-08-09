@@ -1,12 +1,47 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const port = 3000;
 const multer = require("multer");
 const upload = multer({ dest: "./uploads" });
 
-var parser = require("./utils/TTParser");
+const parser = require("./utils/TTParser");
 const calendarGenerator = require("./utils/CalendarGenerator");
-var fs = require("fs");
+const fs = require("fs");
+
+let interval = 5 * 60 * 1000;
+let fileLength = 15 * 60 * 1000;
+function deleteFiles(folder) {
+  const filedir = __dirname + `/${folder}`;
+  fs.readdir(filedir, (err, files) => {
+    if (err) {
+      return;
+    }
+    files.forEach((file, index) => {
+      fs.stat(path.join(filedir, file), (err, stat) => {
+        let now, filedate;
+        if (err) {
+          return;
+        }
+        now = new Date().getTime();
+        filedate = new Date(stat.ctime).getTime() + fileLength;
+        if (now > filedate) {
+          fs.unlink(path.join(filedir, file), (err) => {
+            if (err) {
+              return;
+            }
+            console.log("fileremoved");
+          });
+        }
+      });
+    });
+  });
+}
+setInterval(() => {
+  console.log("setinterval ran");
+  deleteFiles("uploads");
+  deleteFiles("output");
+}, interval);
 
 app.use(express.static("public"));
 
@@ -60,8 +95,7 @@ app.use((req, res) => {
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 function generateICSFile(filepath, startDate, endDate, filename) {
-  var data = fs.readFileSync(filepath).toString();
-
+  let data = fs.readFileSync(filepath).toString();
   const parseddata = parser.ParseHTMLData(data);
   const eventList = calendarGenerator.createEventList(parseddata, startDate, endDate);
   const icsOutput = calendarGenerator.createICS(eventList);
