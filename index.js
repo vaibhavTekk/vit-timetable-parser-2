@@ -19,7 +19,6 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
       const endDate = req.body.endDate.toString().replace(/\-/g, "");
       const filename = req.file.filename;
       const filepath = `${req.file.destination}/${req.file.filename}`;
-      generateICSFile(filepath, startDate, endDate, filename);
       setTimeout(() => {
         fs.unlink(__dirname + "/uploads/" + filename, (err) => {
           if (err) {
@@ -29,15 +28,8 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
           console.log("fileremoved");
           //file removed
         });
-        fs.unlink(__dirname + `/output/${filename}.ics`, (err) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          console.log("fileremoved");
-          //file removed
-        });
       }, 900000);
+      generateICSFile(filepath, startDate, endDate, filename);
       res.send({
         filename,
       });
@@ -78,6 +70,16 @@ function generateICSFile(filepath, startDate, endDate, filename) {
       throw new Error("Error creating ICS File");
     }
   });
+  setTimeout(() => {
+    fs.unlink(__dirname + `/output/${filename}.ics`, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("fileremoved");
+      //file removed
+    });
+  }, 900000);
 }
 
 /*
