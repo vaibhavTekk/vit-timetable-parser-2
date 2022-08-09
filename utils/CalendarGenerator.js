@@ -27,7 +27,7 @@ const sampleData = [
 ];
 
 function createEventList(parsedData, startDate, endDate) {
-  console.log(parsedData);
+  //console.log(parsedData);
   const eventList = [];
   const openingDate = moment(startDate);
   const lastInstructionalDay = moment(endDate).add(1, "days").format("YYYYMMDD[T]HHmm[00Z]");
