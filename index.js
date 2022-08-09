@@ -71,7 +71,7 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
 
 app.get("/download/:id", (req, res) => {
   try {
-    res.download(__dirname + `/tmp/${req.params.id}.ics`, "calendar.ics");
+    res.download(__dirname + `/output/${req.params.id}.ics`, "calendar.ics");
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message, stack: error.stack });
@@ -89,7 +89,7 @@ function generateICSFile(filepath, startDate, endDate, filename) {
   const parseddata = parser.ParseHTMLData(data);
   const eventList = calendarGenerator.createEventList(parseddata, startDate, endDate);
   const icsOutput = calendarGenerator.createICS(eventList);
-  fs.writeFile(__dirname + `/tmp/${filename}.ics`, icsOutput, (err) => {
+  fs.writeFile(__dirname + `/output/${filename}.ics`, icsOutput, (err) => {
     if (err) {
       throw new Error("Error creating ICS File" + err.error + "-" + err.message);
     }
