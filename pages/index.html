@@ -6,17 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/style.css" />
     <script src="https://kit.fontawesome.com/75f23e2b1a.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="script.js" defer></script>
+    <title>Vit Timetable to Calendar</title>
   </head>
   <body class="font-['Poppins']">
-    <div class="flex flex-col justify-center items-center w-full">
+    <nav class="flex flex-row h-12 w-full mb-2 bg-cyan-100 items-center px-4 justify-between">
+      <p class="text-2xl font-bold">VIT Timetable to Calendar</p>
+      <a href="#help" class="text-base">Help</a>
+    </nav>
+    <div id="#generate" class="flex flex-col justify-center items-center w-full">
       <form
         class="flex flex-col items-center justify-center gap-4 w-4/5 md:w-3/5 drop-shadow-md bg-white p-6 rounded-md mx-auto"
         action="/upload"
         method="post"
         enctype="multipart/form-data"
       >
-        <p class="text-3xl font-bold">VIT Timetable Generator</p>
+        <p class="text-3xl font-bold">Generate Calendar File</p>
         <div class="flex justify-center items-center text-cyan-800 w-full">
           <label
             for="file-upload"
@@ -43,7 +49,7 @@
         <span class="text-gray-600 text-sm">All Files are stored for 15 minutes</span>
         <div
           id="buttondiv"
-          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-emerals-200 p-6 rounded-md mx-auto"
+          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-emerald-200 p-2 rounded-md mx-auto"
         >
           <p class="font-semibold text-emerald-800">Here's Your Calendar File</p>
           <a
@@ -56,7 +62,7 @@
         </div>
         <div
           id="error"
-          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-rose-300 p-6 rounded-md mx-auto"
+          class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-rose-300 p-2 rounded-md mx-auto"
         >
           <p class="font-semibold text-black">An Error Occured</p>
           <p id="errortext" class="text-black">Error</p>
@@ -64,8 +70,33 @@
         </div>
       </form>
     </div>
-
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="script.js"></script>
+    <main id="help" class="flex flex-col justify-center p-4 my-2 w-4/5 md:w-3/5 mx-auto">
+      <h1 class="text-xl font-semibold">Getting the Timetable File</h1>
+      <p class="text-base">
+        To get the Timetable file as HTML , log on to VTOP and navigate to Academics > Timetable and then press Ctrl+S
+        to save the page as html
+      </p>
+      <br />
+      <h1 class="text-xl font-semibold">Importing Calendar files to your prefferred Calendar App</h1>
+      <p class="text-base">
+        <p><span class="font-semibold">Note :</span> Create a new Calendar before importing</p>
+        <a
+          class="font-semibold underline"
+          target="_blank"
+          href="https://support.google.com/calendar/answer/37118?hl=en&co=GENIE.Platform%3DDesktop#zippy="
+        >
+          Google Calendar
+        </a>
+        <a class="font-semibold underline" target="_blank" href="https://support.apple.com/en-in/guide/calendar/icl1023/mac">
+          iCalendar
+        </a>
+        <a class="font-semibold underline" target="_blank" href="https://support.microsoft.com/en-us/office/import-calendars-into-outlook-8e8364e1-400e-4c0f-a573-fe76b5a2d379">
+          Outlook Calendar        
+        </a>
+      </p>
+    </main>
+    <footer class="flex flex-row h-12 w-full mt-2 bg-cyan-100 items-center px-4 justify-center">
+      <p>Made by Vaibhav TS</p>
+    </footer>
   </body>
 </html>
