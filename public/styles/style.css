@@ -853,10 +853,6 @@ select{
 .font-\[\'Poppins\'\]{
   font-family: 'Poppins';
 }
-.text-2xl{
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
 .text-base{
   font-size: 1rem;
   line-height: 1.5rem;
@@ -924,5 +920,10 @@ select{
 
   .md\:w-3\/5{
     width: 60%;
+  }
+
+  .md\:text-2xl{
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 }
