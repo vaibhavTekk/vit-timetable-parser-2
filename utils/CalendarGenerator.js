@@ -58,6 +58,7 @@ function createEventList(parsedData, startDate, endDate) {
           const firstEventDate = findNextDay(timedata[2], openingDate).format("YYYY-MM-DD").split("-").map(Number);
           const event = {
             start: [...firstEventDate, timedata[0], timedata[1]],
+            startOutputType: "local",
             duration,
             title: `${course.title} - ${course.code}`,
             recurrenceRule: repeatRule,
