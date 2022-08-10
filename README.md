@@ -2,6 +2,8 @@
 
 A Simple timetable parser that takes VTOP html page as input and outputs an ICS calendar file
 
+### Working App Deployed at [https://vit-timetable.herokuapp.com/](https://vit-timetable.herokuapp.com/)
+
 ## Basic Use
 
 Requirements : NodeJS
