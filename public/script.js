@@ -38,6 +38,12 @@ uploadbox.onchange = () => {
   if (uploadbox.files.length > 0) {
     const fileName = document.querySelector("#filename");
     fileName.textContent = "Uploaded file: " + uploadbox.files[0].name;
+    const fileLabel = document.querySelector("#f-label");
+    fileLabel.classList.remove("bg-cyan-100", "hover:bg-cyan-50", "border-cyan-400");
+    fileLabel.classList.add("bg-emerald-100", "hover:bg-emerald-50", "border-emerald-400");
+    let innerhtml = `<span class="font-semibold">File Uploaded</span>`;
+    const prompt = document.querySelector("#upload-prompt");
+    prompt.innerHTML = innerhtml;
   }
 };
 
