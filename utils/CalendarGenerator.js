@@ -37,12 +37,14 @@ function createEventList(parsedData, startDate, endDate) {
     let duration = {};
 
     if (course.type === "P" || course.type === "E") {
-      if (course.slots.length == 2) {
-        slotlist = [course.slots[0]];
-        duration = { hours: 1, minutes: 40 };
-      } else if (course.slots.length == 4) {
-        slotlist = [course.slots[0], course.slots[2]];
-        duration = { hours: 1, minutes: 40 };
+      if (course.slots[0].includes("L")) {
+        if (course.slots.length == 2) {
+          slotlist = [course.slots[0]];
+          duration = { hours: 1, minutes: 40 };
+        } else if (course.slots.length == 4) {
+          slotlist = [course.slots[0], course.slots[2]];
+          duration = { hours: 1, minutes: 40 };
+        }
       } else {
         slotlist = course.slots;
         duration = { minutes: 50 };
