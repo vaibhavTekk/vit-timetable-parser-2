@@ -18,6 +18,7 @@ npm run dev
 navigate to [http://localhost:3000/](http://localhost:3000/) to use the app
 
 Todo List:
-[] - Google Calendar Integration
-[] - Store Event Data in LocalStorage
-[] - Move ICS file Creation to frontend
+
+- [ ] - Google Calendar Integration
+- [ ] - Store Event Data in LocalStorage
+- [ ] - Move ICS file Creation to frontend
