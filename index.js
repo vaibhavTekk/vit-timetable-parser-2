@@ -7,7 +7,12 @@ const upload = multer({ dest: "./uploads" });
 
 const parser = require("./utils/TTParser");
 const calendarGenerator = require("./utils/CalendarGenerator");
+const googleCalendarService = require("./utils/GoogleCalendarService");
+const { verifyAuth } = require("./middleware/auth");
 const fs = require("fs");
+
+// Parse JSON bodies
+app.use(express.json());
 
 let interval = 5 * 60 * 1000;
 let fileLength = 15 * 60 * 1000;
@@ -76,6 +81,97 @@ app.get("/download/:id", (req, res) => {
     console.log(error);
     res.status(400).json({ error: error.message, stack: error.stack });
   }
+});
+
+// New Google Calendar API endpoints
+app.post("/api/calendar/create", verifyAuth, async (req, res) => {
+  try {
+    const { accessToken, calendarName } = req.body;
+    
+    if (!accessToken) {
+      return res.status(400).json({ error: "Access token is required" });
+    }
+
+    const calendar = await googleCalendarService.createCalendar(
+      accessToken, 
+      calendarName || "VIT Timetable"
+    );
+
+    res.json({ calendar });
+  } catch (error) {
+    console.error("Error creating calendar:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/api/calendar/add-events", verifyAuth, upload.single("timetable"), async (req, res) => {
+  try {
+    const { accessToken, calendarId, startDate, endDate } = req.body;
+    
+    if (!accessToken || !calendarId || !req.file || !startDate || !endDate) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Parse timetable and generate events
+    const filepath = `${req.file.destination}/${req.file.filename}`;
+    const data = fs.readFileSync(filepath).toString();
+    const parsedData = parser.ParseHTMLData(data);
+    const formattedStartDate = startDate.toString().replace(/\-/g, "");
+    const formattedEndDate = endDate.toString().replace(/\-/g, "");
+    const eventList = calendarGenerator.createEventList(parsedData, formattedStartDate, formattedEndDate);
+
+    // Add events to Google Calendar
+    const createdEvents = await googleCalendarService.addEventsToCalendar(
+      accessToken,
+      calendarId,
+      eventList
+    );
+
+    res.json({ 
+      message: "Events added successfully",
+      eventsCount: createdEvents.length,
+      calendarId 
+    });
+  } catch (error) {
+    console.error("Error adding events to calendar:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/calendar/list", verifyAuth, async (req, res) => {
+  try {
+    const { accessToken } = req.query;
+    
+    if (!accessToken) {
+      return res.status(400).json({ error: "Access token is required" });
+    }
+
+    const calendars = await googleCalendarService.getCalendars(accessToken);
+    res.json({ calendars });
+  } catch (error) {
+    console.error("Error fetching calendars:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint to get Firebase config for frontend
+app.get("/api/firebase-config", (req, res) => {
+  if (!googleCalendarService.isConfigured()) {
+    return res.status(503).json({ 
+      error: 'Firebase is not configured',
+      configured: false 
+    });
+  }
+  
+  res.json({
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    configured: true
+  });
 });
 
 app.use((req, res) => {
