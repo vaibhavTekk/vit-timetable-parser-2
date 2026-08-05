@@ -45,7 +45,13 @@ setInterval(() => {
 
 app.use(express.static("public"));
 
-app.get("/", (req, res) => res.sendFile("./pages/index.html", { root: __dirname }));
+app.get("/", (req, res) => {
+  const html = fs
+    .readFileSync(path.join(__dirname, "pages/index.html"))
+    .toString()
+    .replace("__GOOGLE_CLIENT_ID__", process.env.GOOGLE_CLIENT_ID || "");
+  res.send(html);
+});
 
 app.post("/api/upload", upload.single("timetable"), (req, res) => {
   try {
@@ -69,9 +75,34 @@ app.post("/api/upload", upload.single("timetable"), (req, res) => {
   }
 });
 
+const idPattern = /^[a-zA-Z0-9_-]+$/;
+
+function sanitizeId(id) {
+  if (typeof id !== "string" || !idPattern.test(id) || path.basename(id) !== id) {
+    throw new Error("Invalid file identifier");
+  }
+  return id;
+}
+
 app.get("/download/:id", (req, res) => {
   try {
-    res.download(__dirname + `/output/${req.params.id}.ics`, "calendar.ics");
+    const id = sanitizeId(req.params.id);
+    res.download(path.join(__dirname, "output", `${id}.ics`), "calendar.ics");
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message, stack: error.stack });
+  }
+});
+
+app.get("/api/events/:id", (req, res) => {
+  try {
+    const id = sanitizeId(req.params.id);
+    const filePath = path.join(__dirname, "output", `${id}.json`);
+    if (!fs.existsSync(filePath)) {
+      throw new Error("Event data not found or has expired");
+    }
+    const events = JSON.parse(fs.readFileSync(filePath).toString());
+    res.json({ events });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message, stack: error.stack });
@@ -89,9 +120,15 @@ function generateICSFile(filepath, startDate, endDate, filename) {
   const parseddata = parser.ParseHTMLData(data);
   const eventList = calendarGenerator.createEventList(parseddata, startDate, endDate);
   const icsOutput = calendarGenerator.createICS(eventList);
+  const googleEvents = calendarGenerator.toGoogleEvents(eventList);
   fs.writeFile(__dirname + `/output/${filename}.ics`, icsOutput, (err) => {
     if (err) {
-      throw new Error("Error creating ICS File" + err.error + "-" + err.message);
+      console.log("Error creating ICS File" + err.message);
+    }
+  });
+  fs.writeFile(__dirname + `/output/${filename}.json`, JSON.stringify(googleEvents), (err) => {
+    if (err) {
+      console.log("Error creating Event Data File" + err.message);
     }
   });
 }

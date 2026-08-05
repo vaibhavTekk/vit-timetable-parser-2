@@ -96,4 +96,27 @@ function createICS(list) {
   return value;
 }
 
-module.exports = { createICS, createEventList };
+function toGoogleEvents(list) {
+  return list.map((event) => {
+    const [year, month, day, hour, minute] = event.start;
+    const start = moment([year, month - 1, day, hour, minute]);
+    const end = moment(start).add(event.duration.hours || 0, "hours").add(event.duration.minutes || 0, "minutes");
+
+    return {
+      summary: event.title,
+      description: event.description,
+      location: event.location,
+      start: {
+        dateTime: start.format("YYYY-MM-DDTHH:mm:ss"),
+        timeZone: "Asia/Kolkata",
+      },
+      end: {
+        dateTime: end.format("YYYY-MM-DDTHH:mm:ss"),
+        timeZone: "Asia/Kolkata",
+      },
+      recurrence: [`RRULE:${event.recurrenceRule}`],
+    };
+  });
+}
+
+module.exports = { createICS, createEventList, toGoogleEvents };
