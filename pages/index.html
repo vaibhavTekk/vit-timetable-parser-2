@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="./styles/style.css" />
   <script src="https://kit.fontawesome.com/75f23e2b1a.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+  <script src="https://accounts.google.com/gsi/client" defer></script>
   <script src="script.js" defer></script>
+  <meta name="google-client-id" content="__GOOGLE_CLIENT_ID__" />
   <title>Vit Timetable to Calendar</title>
 </head>
 
@@ -53,6 +55,12 @@
           <i class="fa-solid fa-download text-white"></i>
           <span class="text-white">Download</span>
         </a>
+        <button type="button" id="google-calendar-button"
+          class="button w-auto flex flex-row gap-3 px-4 py-2 bg-white border border-gray-300 items-center rounded-md hover:scale-105">
+          <i class="fa-brands fa-google text-cyan-600"></i>
+          <span class="text-black">Add to Google Calendar</span>
+        </button>
+        <p id="gcal-status" class="hidden text-sm text-emerald-800"></p>
       </div>
       <div id="error"
         class="hidden flex-col items-center justify-center gap-1 m-2 w-full drop-shadow-md bg-rose-300 p-2 rounded-md mx-auto">
